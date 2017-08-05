@@ -6,6 +6,7 @@
 ```
 bash, mkdir, rm, git, curl, unzip, which
 ```
+
 ## 2. 获取Flutter SDK
 克隆下面这个仓库:
 ```
@@ -42,10 +43,12 @@ $ flutter packages get // 获取pubspec.yaml文件中的所有依赖项
 
 $ flutter packages upgrade // 获取依赖项的更新
 ```
+
 ## 3. IDE配置
 - 在 Plugins 中下载安装Flutter 和 Dart 插件
 - 配置Flutter SDK path
   选择 Languages & Frameworks>Flutter，添加flutter目录，比如 /Users/obiwan/flutter（不含/bin）
+
 ## 4. 其他设置
 macOS同时支持ios和android开发
 - 安装 Xcode(7.2以上)。配置最新的Xcode命令行工具（command-line tools），可以执行下面的命令，绝大多数情况下可行，但最新的版本可能要视情况而定。需要iPhone5s及以上的设备或虚拟机
