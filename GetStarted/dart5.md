@@ -150,4 +150,12 @@ class Llama {
 ```
 在生成的文档中， [food] 变成了指向 Food 类的 API 文档连接。
 
-**更多内容见[文章](https://www.dartlang.org/articles)、[示例](https://www.dartlang.org/dart-vm/dart-by-example)**
+---
+
+**更多内容**
+- [文章](https://www.dartlang.org/articles)
+- [代码用法示例](https://www.dartlang.org/dart-vm/dart-by-example)
+- [Dart核心库](https://www.dartlang.org/guides/libraries/library-tour)
+- [Effective Dart](https://www.dartlang.org/guides/language/effective-dart)
+- [Futures教程](https://www.dartlang.org/tutorials/language/futures)
+- [Streams教程](https://www.dartlang.org/docs/tutorials/streams)
