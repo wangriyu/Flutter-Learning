@@ -10,6 +10,9 @@
         * [part IV](GetStarted/dart4.md)
         * [part V](GetStarted/dart5.md)
 * [构建UI](BuildUIs/index.md)
+    * [了解框架](BuildUIs/frameworkTour.md)
+    * [控件](BuildUIs/widgets.md)
+    * [app实例](BuildUIs/sample.md)
 * [设备和API](Device&API/index.md)
 * [测试和部署](Test&Deploy&Workflow/index.md)
 
