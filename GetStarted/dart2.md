@@ -357,7 +357,7 @@ sb.write('foo')..write('bar'); // 无效
 
 ---
 
-## 控制流语句
+## 控制流语句Control flow statements
 - if else
 - for循环
 - while和do while循环
@@ -468,7 +468,7 @@ assert(urlString.startsWith('https'), 'URL ($urlString) should start with "https
 
 ---
 
-## 异常
+## 异常Exception
 
 **throw语句**
 
