@@ -380,7 +380,7 @@ callbacks.forEach((c) => c()); // 输出0，1，2
 // in javaScript
 var callbacks = [];
 for (var i = 0; i < 3; i++) { // 改成let输出0，1，2
-  callbacks.add(() => print(i));
+  callbacks.push(() => console.log(i));
 }
 callbacks.forEach((c) => c()); // 输出3，3，3
 ```
