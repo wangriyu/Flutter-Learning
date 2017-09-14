@@ -16,7 +16,8 @@ Flutter控件是使用现代化的响应式风格框架构建的，其灵感来�
 核心思想是通过 **控件[widgets](https://docs.flutter.io/flutter/widgets/Widget-class.html)** 来构建你的UI。
 
 控件通过当前的配置configuration和状态state来告诉视图应该如何显示。
-当一个控件的状态改变时，控件会重建其描述description，而框架framework会跟之前的描述做比对以确定底层渲染树中所需的最小变化，然后将状态转换到下个状态。
+当一个控件的状态改变时，控件会重建其描述description，而框架framework会跟之前的描述做比对以确定底层渲染树中所需的最小变化来更新视图，
+然后将状态转换到下个状态。类似于Virtual DOM的作用。
 
 > 如果你想通过深入一些代码来更好地了解Flutter，查看[ Building Layouts in Flutter](https://flutter.io/tutorials/layout)和[Adding Interactivity to Your Flutter App](https://flutter.io/tutorials/interactive)
 
@@ -35,7 +36,8 @@ runApp函数接受指定的控件(Widget)，并使其作为控件树(widget tree
 控件(Widget)定义一个元素(Element)的配置，在Flutter框架的层次结构中处于核心层。
 本实例中，控件树(widget tree)包含两个控件，Center控件使其子控件处于中间位置，Text控件打印文本内容。runApp函数强制将根控件覆盖屏幕，上述实例结果是屏幕中央显示语句“Hello, world!”。
 
-在写应用程序时，经常会使用[StatelessWidget](https://docs.flutter.io/flutter/widgets/StatelessWidget-class.html)和[StatefulWidget](https://docs.flutter.io/flutter/widgets/StatefulWidget-class.html)编写新控件，两者的差别在于你是否要管理控件的状态。一个控件的主要任务是实现build函数，定义控件中其他较低层次的控件。框架将依次构建这些控件，直到底层渲染对象。
+在写应用程序时，经常会使用[StatelessWidget](https://docs.flutter.io/flutter/widgets/StatelessWidget-class.html)和[StatefulWidget](https://docs.flutter.io/flutter/widgets/StatefulWidget-class.html)
+编写新控件，两者的差别在于你是否要管理控件的状态。一个控件的主要任务是实现build函数，定义控件中其他较低层次的控件。框架将依次构建这些控件，直到底层渲染对象。
 
 ## 基础控件Basic widgets
 
@@ -120,14 +122,23 @@ void main() {
   ));
 }
 ```
+
 确保在pubspec.yaml文件中的flutter部分设置了uses-material-design: true，这样才允许你使用预定义的一套[material icons](https://design.google.com/icons/)
+
 ```dart
 name: my_app
 flutter:
   uses-material-design: true
 ```
-许多控件件需要在[MaterialApp](https://docs.flutter.io/flutter/material/MaterialApp-class.html)内部才能正确显示，因为这样才能继承主题数据，因此上面的例子中用MaterialApp做根控件。
+许多控件需要在[MaterialApp](https://docs.flutter.io/flutter/material/MaterialApp-class.html)内部才能正确显示，
+因为这样才能继承主题数据，因此上面的例子中用MaterialApp做根控件。
 
-MyAppBar控件创建了一个Container(容器)，高度为56设备无关像素(device-independent pixels)，内部左右填充（padding）8像素(pixels)。容器内部，MyAppBar为子控件设置Row(水平)布局，中间的title控件被设置成[Expanded](https://docs.flutter.io/flutter/widgets/Expanded-class.html)，Expanded的作用是展开Row、Column和Flex的子控件，意味它可以使用剩余的所有空间。
+**MyAppBar**控件创建了一个Container(容器)，高度为56设备无关像素(device-independent pixels)，内部左右填充（padding）8像素(pixels)。
+容器内部，MyAppBar为子控件设置Row(水平)布局，中间的title控件被设置成[Expanded](https://docs.flutter.io/flutter/widgets/Expanded-class.html)，Expanded的作用是展开Row、Column和Flex的子控件，意味它可以使用剩余的所有空间。
 
-MyScaffold控件为子控件设置垂直布局，在垂直顶部放置一个MyAppBar的实例，将MyAppBar的Text控件作为标题使用，将控件作为参数传递给其他控件非常方便实用的，你可以创建通用的控件，以各种方式重复的使用。最后，MyScaffold使用Expanded，用一个中心文本来填充剩余的空间。
+**MyScaffold**控件为子控件设置垂直布局，在垂直顶部放置一个MyAppBar的实例，将MyAppBar的Text控件作为标题使用，将控件作为参数传递给其他控件非常方便实用的，你可以创建通用的控件，以各种方式重复的使用。最后，MyScaffold使用Expanded，用一个中心文本来填充剩余的空间。
+
+## 使用Material Design
+
+Material Design风格控件：[Widgets Overview - Material Design Widgets](https://flutter.io/widgets/material)
+
