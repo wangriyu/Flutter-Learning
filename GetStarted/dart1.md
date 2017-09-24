@@ -57,7 +57,7 @@ assert(lineCount == null);
 // assert(condition)方法只在检查模式下有用，表达式的值或者函数返回true，则assert语句成功并继续执行代码。如果值为false，则assert语句失败并抛出一个异常 (AssertionError)
 ```
 
-- **Final和const**。
+- **final和const**。
 
 一个final变量只能设定一次且不能更改，一个const变量是编译时变量（const变量是隐式final变量）。
 一个final的顶层变量或者类变量，会在它第一次被调用时初始化。
@@ -84,7 +84,7 @@ foo = [];
 变量类型包括：numbers、strings、booleans、lists（也就是数组）、maps、runs、symbols。
 每个变量类型有自定义的构造函数，比如new Map()创建一个map变量。
 
-**数字类型numbers**分int（-2e53～2e53）和double型（IEEE 754标准）,支持abs()、ceil()等[math函数](https://api.dartlang.org/stable/dart-math/dart-math-library.html)。
+**`数字类型numbers`**分int（-2e53～2e53）和double型（IEEE 754标准）,支持abs()、ceil()等[math函数](https://api.dartlang.org/stable/dart-math/dart-math-library.html)。
 int型支持位运算，如<<、>>、& 和 | 
 
 ```dart
@@ -106,7 +106,7 @@ String piAsString = 3.14159.toStringAsFixed(2);
 assert(piAsString == '3.14');
 ```
 
-**字符串类型Strings**是UTF-16代码单元的序列，可以使用单引号或双引号创建一个字符串。
+**`字符串类型Strings`**是UTF-16代码单元的序列，可以使用单引号或双引号创建一个字符串。
 
 可以通过使用 ${expression} 把一个表达式的值放进字符串。如果表达式是一个标识符，你可以跳过{}。为了获得相应对象的字符串，Dart 调用对象的 toString（）方法。
 
@@ -158,7 +158,7 @@ var s = r"In a raw string, even \n isn't special.";
 print('Unicode escapes work: \u2665');
 ```
 
-**布尔类型booleans**
+**`布尔类型booleans`**
 
 不同于javaScript，1、“aString”、someObject 都视为假的
 
@@ -199,7 +199,7 @@ var iMeantToDoThis = 0 / 0;
 assert(iMeantToDoThis.isNaN);
 ```
 
-**列表类型List**
+**`列表类型List`**
 
 在Dart，数组是列表对象，所以我们通常只是将其称为lists。
 常见用法与javaScript类似：
@@ -232,7 +232,7 @@ assert(fruits.length == 0);
 
 更多用法详见[泛型Generics](https://www.dartlang.org/guides/language/language-tour#generics)和[集合Collections](https://www.dartlang.org/docs/dart-up-and-running/ch03.html#collections)。
 
-**Maps类型**
+**`Maps类型`**
 
 一般情况下，map是一个键值对组成的对象，这两个键和值可以是任何类型的对象。
 
@@ -271,7 +271,7 @@ final constantMap = const {
 constantMap[2] = 'Helium'; // 会报错，因为不可更改
 ```
 
-**Runes类型**
+**`Runes符号类型`**
 
 在Dart中，runes是字符串的UTF-32点。Unicode给每个字符定义了一个值。因为Dart中的字符串是UTF-16单元的序列，所以表达32位Unicode值需要特定的语法来实现。
 通常一个Unicode码的形式是/uXXXX，XXXX是4位16进制的值，比如\u2665代表♥这个符号，当指定多于或少于4位的16进制时用{}包裹，比如\u{1f600}代表😆这个符号。
@@ -306,4 +306,4 @@ main() {
 #bar
 ```
 
-更多详细信息见[ Dart：镜子 - 反射](https://www.dartlang.org/docs/dart-up-and-running/ch03.html#dartmirrors---reflection)
+更多详细信息见[ Dart：镜像 - 反射](https://www.dartlang.org/docs/dart-up-and-running/ch03.html#dartmirrors---reflection)

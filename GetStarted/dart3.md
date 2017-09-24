@@ -342,7 +342,7 @@ class EffectiveDoer extends Doer {
 
 你可以重写在下表中列出的操作符。例如，如果你定义了一个向量类，你可以定义一个 + 方法来加两个向量。
 
-|  <   |  +   |  \|  |  [ ] |
+|  <   |  +   |  \|  | [ ]  |
 | :--: | :--: | :--: | :--: |
 |  >   |  /   |  ^   | [ ]= |
 |  <=  |  ~/  |  &   |  ~   |
@@ -666,9 +666,9 @@ abstract class Musical {
 }
 ```
 > 从1.13起，Dart VM已经取消了对mixin的两个限制：
-> 1. Mixins允许继承自类class，不局限于Object
-> 2. Mixins可以调用super（）
->    “super mixins” 在dart2js不受支持，并且需要在dartanalyzer中使用--supermixin标签。更多关于mixins，详见[Mixins in Dart](https://www.dartlang.org/articles/language/mixins)
+> > 1. Mixins允许继承自类class，不局限于Object
+> > 2. Mixins可以调用super（）
+> >    “super mixins” 在dart2js不受支持，并且需要在dartanalyzer中使用--supermixin标签。更多关于mixins，详见[Mixins in Dart](https://www.dartlang.org/articles/language/mixins)
 
 
 **类的变量和方法**
