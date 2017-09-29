@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 export 'animation_demo.dart';
+export 'animated_list.dart';
 export 'calculator_demo.dart';
 export 'colors_demo.dart';
 export 'contacts_demo.dart';

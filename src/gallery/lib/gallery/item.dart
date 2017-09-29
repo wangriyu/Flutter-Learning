@@ -33,8 +33,8 @@ class GalleryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MergeSemantics(
       child: new ListTile(
-        title: new Text(title),
-        subtitle: new Text(subtitle),
+        title: new Text(title, textDirection: TextDirection.ltr),
+        subtitle: new Text(subtitle, textDirection: TextDirection.ltr),
         onTap: () {
           if (routeName != null) {
             Timeline.instantSync('Start Transition', arguments: <String, String>{
@@ -62,11 +62,32 @@ List<GalleryItem> _buildGalleryItems() {
       buildRoute: (BuildContext context) => new ShrineDemo(),
     ),
     new GalleryItem(
+      title: 'Animated List',
+      subtitle:'add or delete listitem',
+      category: 'Demos',
+      routeName: AnimatedListSample.routeName,
+      buildRoute: (BuildContext context) => new AnimatedListSample(),
+    ),
+    new GalleryItem(
+      title: 'Pesto',
+      subtitle: 'Simple recipe browser',
+      category: 'Demos',
+      routeName: PestoDemo.routeName,
+      buildRoute: (BuildContext context) => const PestoDemo(),
+    ),
+    new GalleryItem(
       title: 'Contact profile',
       subtitle: 'Address book entry with a flexible appbar',
       category: 'Demos',
       routeName: ContactsDemo.routeName,
       buildRoute: (BuildContext context) => new ContactsDemo(),
+    ),
+    new GalleryItem(
+      title: 'Caculator',
+      subtitle: 'simple caculator',
+      category: 'Demos',
+      routeName: CalculatorDemo.routeName,
+      buildRoute: (BuildContext context) =>const CalculatorDemo(),
     ),
     new GalleryItem(
       title: 'Animation',
@@ -320,18 +341,12 @@ List<GalleryItem> _buildGalleryItems() {
 
   // Keep Pesto around for its regression test value. It is not included
   // in (release builds) the performance tests.
-  assert(() {
-    galleryItems.insert(0,
-      new GalleryItem(
-        title: 'Pesto',
-        subtitle: 'Simple recipe browser',
-        category: 'Demos',
-        routeName: PestoDemo.routeName,
-        buildRoute: (BuildContext context) => const PestoDemo(),
-      ),
-    );
-    return true;
-  }());
+//  assert(() {
+//    galleryItems.insert(0,
+//
+//    );
+//    return true;
+//  }());
 
   return galleryItems;
 }
