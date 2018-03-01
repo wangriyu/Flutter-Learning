@@ -77,16 +77,20 @@ class TabbedComponentDemoScaffold extends StatelessWidget {
         ),
         body: new TabBarView(
           children: demos.map((ComponentDemoTabData demo) {
-            return new Column(
-              children: <Widget>[
-                new Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: new Text(demo.description,
-                    style: Theme.of(context).textTheme.subhead
-                  )
-                ),
-                new Expanded(child: demo.demoWidget)
-              ],
+            return new SafeArea(
+              top: false,
+              bottom: false,
+              child: new Column(
+                children: <Widget>[
+                  new Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: new Text(demo.description,
+                      style: Theme.of(context).textTheme.subhead
+                    )
+                  ),
+                  new Expanded(child: demo.demoWidget)
+                ],
+              ),
             );
           }).toList(),
         ),
@@ -150,7 +154,10 @@ class FullScreenCodeDialogState extends State<FullScreenCodeDialog> {
     return new Scaffold(
       appBar: new AppBar(
         leading: new IconButton(
-          icon: const Icon(Icons.clear),
+          icon: const Icon(
+            Icons.clear,
+            semanticLabel: 'Close',
+          ),
           onPressed: () { Navigator.pop(context); }
         ),
         title: const Text('Example code')

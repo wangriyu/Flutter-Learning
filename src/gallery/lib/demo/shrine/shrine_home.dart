@@ -84,9 +84,7 @@ class _ShrineGridLayout extends SliverGridLayout {
   }
 
   @override
-  double estimateMaxScrollOffset(int childCount) {
-    if (childCount == null)
-      return null;
+  double computeMaxScrollOffset(int childCount) {
     if (childCount == 0)
       return 0.0;
     final int rowCount = _rowAtIndex(childCount - 1) + 1;
@@ -132,7 +130,11 @@ class _VendorItem extends StatelessWidget {
             width: 24.0,
             child: new ClipRRect(
               borderRadius: new BorderRadius.circular(12.0),
-              child: new Image.asset(vendor.avatarAsset, fit: BoxFit.cover),
+              child: new Image.asset(
+                vendor.avatarAsset,
+                package: vendor.avatarAssetPackage,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           const SizedBox(width: 8.0),
@@ -196,11 +198,11 @@ class _FeaturePriceItem extends _PriceItem {
 class _HeadingLayout extends MultiChildLayoutDelegate {
   _HeadingLayout();
 
-  static final String price = 'price';
-  static final String image = 'image';
-  static final String title = 'title';
-  static final String description = 'description';
-  static final String vendor = 'vendor';
+  static const String price = 'price';
+  static const String image = 'image';
+  static const String title = 'title';
+  static const String description = 'description';
+  static const String vendor = 'vendor';
 
   @override
   void performLayout(Size size) {
@@ -271,7 +273,11 @@ class _Heading extends StatelessWidget {
               ),
               new LayoutId(
                 id: _HeadingLayout.image,
-                child: new Image.asset(product.imageAsset, fit: BoxFit.cover),
+                child: new Image.asset(
+                  product.imageAsset,
+                  package: product.imageAssetPackage,
+                  fit: BoxFit.cover,
+                ),
               ),
               new LayoutId(
                 id: _HeadingLayout.title,
@@ -312,7 +318,7 @@ class _ProductItem extends StatelessWidget {
             new Column(
               children: <Widget>[
                 new Align(
-                  alignment: FractionalOffset.centerRight,
+                  alignment: Alignment.centerRight,
                   child: new _ProductPriceItem(product: product),
                 ),
                 new Container(
@@ -321,7 +327,11 @@ class _ProductItem extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: new Hero(
                       tag: product.tag,
-                      child: new Image.asset(product.imageAsset, fit: BoxFit.contain),
+                      child: new Image.asset(
+                        product.imageAsset,
+                        package: product.imageAssetPackage,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 new Padding(
@@ -378,11 +388,10 @@ class _ShrineHomeState extends State<ShrineHome> {
       shoppingCart: _shoppingCart,
       body: new CustomScrollView(
         slivers: <Widget>[
-          new SliverToBoxAdapter(
-            child: new _Heading(product: featured),
-          ),
-          new SliverPadding(
-            padding: const EdgeInsets.all(16.0),
+          new SliverToBoxAdapter(child: new _Heading(product: featured)),
+          new SliverSafeArea(
+            top: false,
+            minimum: const EdgeInsets.all(16.0),
             sliver: new SliverGrid(
               gridDelegate: gridDelegate,
               delegate: new SliverChildListDelegate(

@@ -6,6 +6,7 @@
 
 * `cd gallery`
 * `flutter upgrade`(可选操作)
+* `git clone https://flutter.googlesource.com/gallery-assets`
 * `flutter run`
 
 `flutter run --release`命令会编译并安装app（确保已连接设备）。

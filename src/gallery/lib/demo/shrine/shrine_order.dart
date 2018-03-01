@@ -85,7 +85,7 @@ class _VendorItem extends StatelessWidget {
         new SizedBox(
           height: 24.0,
           child: new Align(
-            alignment: FractionalOffset.bottomLeft,
+            alignment: Alignment.bottomLeft,
             child: new Text(vendor.name, style: theme.vendorTitleStyle),
           ),
         ),
@@ -101,10 +101,10 @@ class _VendorItem extends StatelessWidget {
 class _HeadingLayout extends MultiChildLayoutDelegate {
   _HeadingLayout();
 
-  static final String image = 'image';
-  static final String icon = 'icon';
-  static final String product = 'product';
-  static final String vendor = 'vendor';
+  static const String image = 'image';
+  static const String icon = 'icon';
+  static const String product = 'product';
+  static const String vendor = 'vendor';
 
   @override
   void performLayout(Size size) {
@@ -113,8 +113,8 @@ class _HeadingLayout extends MultiChildLayoutDelegate {
     final double imageWidth = (landscape ? size.width / 2.0 : size.width) - margin * 2.0;
     final BoxConstraints imageConstraints = new BoxConstraints(maxHeight: 224.0, maxWidth: imageWidth);
     final Size imageSize = layoutChild(image, imageConstraints);
-    final double imageY = 0.0;
-    positionChild(image, new Offset(margin, imageY));
+    const double imageY = 0.0;
+    positionChild(image, const Offset(margin, imageY));
 
     final double productWidth = landscape ? size.width / 2.0 : size.width - margin;
     final BoxConstraints productConstraints = new BoxConstraints(maxWidth: productWidth);
@@ -172,8 +172,9 @@ class _Heading extends StatelessWidget {
                   tag: product.tag,
                   child: new Image.asset(
                     product.imageAsset,
+                    package: product.imageAssetPackage,
                     fit: BoxFit.contain,
-                    alignment: FractionalOffset.center,
+                    alignment: Alignment.center,
                   ),
                 ),
               ),
@@ -286,8 +287,9 @@ class _OrderPageState extends State<OrderPage> {
               quantityChanged: (int value) { updateOrder(quantity: value); },
             ),
           ),
-          new SliverPadding(
-            padding: const EdgeInsets.fromLTRB(8.0, 32.0, 8.0, 8.0),
+          new SliverSafeArea(
+            top: false,
+            minimum: const EdgeInsets.fromLTRB(8.0, 32.0, 8.0, 8.0),
             sliver: new SliverGrid(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 248.0,
@@ -302,6 +304,7 @@ class _OrderPageState extends State<OrderPage> {
                       elevation: 1.0,
                       child: new Image.asset(
                         product.imageAsset,
+                        package: product.imageAssetPackage,
                         fit: BoxFit.contain,
                       ),
                     );

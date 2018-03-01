@@ -31,20 +31,18 @@ class GalleryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new MergeSemantics(
-      child: new ListTile(
-        title: new Text(title, textDirection: TextDirection.ltr),
-        subtitle: new Text(subtitle, textDirection: TextDirection.ltr),
-        onTap: () {
-          if (routeName != null) {
-            Timeline.instantSync('Start Transition', arguments: <String, String>{
-              'from': '/',
-              'to': routeName
-            });
-            Navigator.pushNamed(context, routeName);
-          }
+    return new ListTile(
+      title: new Text(title),
+      subtitle: new Text(subtitle),
+      onTap: () {
+        if (routeName != null) {
+          Timeline.instantSync('Start Transition', arguments: <String, String>{
+            'from': '/',
+            'to': routeName
+          });
+          Navigator.pushNamed(context, routeName);
         }
-      ),
+      }
     );
   }
 }
@@ -56,7 +54,7 @@ List<GalleryItem> _buildGalleryItems() {
     // Demos
     new GalleryItem(
       title: 'Shrine',
-      subtitle:'Basic shopping app',
+      subtitle: 'Basic shopping app',
       category: 'Demos',
       routeName: ShrineDemo.routeName,
       buildRoute: (BuildContext context) => new ShrineDemo(),
@@ -67,13 +65,6 @@ List<GalleryItem> _buildGalleryItems() {
       category: 'Demos',
       routeName: AnimatedListSample.routeName,
       buildRoute: (BuildContext context) => new AnimatedListSample(),
-    ),
-    new GalleryItem(
-      title: 'Pesto',
-      subtitle: 'Simple recipe browser',
-      category: 'Demos',
-      routeName: PestoDemo.routeName,
-      buildRoute: (BuildContext context) => const PestoDemo(),
     ),
     new GalleryItem(
       title: 'Contact profile',
@@ -95,6 +86,13 @@ List<GalleryItem> _buildGalleryItems() {
       category: 'Demos',
       routeName: AnimationDemo.routeName,
       buildRoute: (BuildContext context) => const AnimationDemo(),
+    ),
+    new GalleryItem(
+      title: 'Video',
+      subtitle: 'Video playback',
+      category: 'Demos',
+      routeName: VideoDemo.routeName,
+      buildRoute: (BuildContext context) => const VideoDemo(),
     ),
     // Material Components
     new GalleryItem(
@@ -124,6 +122,13 @@ List<GalleryItem> _buildGalleryItems() {
       category: 'Material Components',
       routeName: ChipDemo.routeName,
       buildRoute: (BuildContext context) => new ChipDemo(),
+    ),
+    new GalleryItem(
+      title: 'Data tables',
+      subtitle: 'Data tables',
+      category: 'Material Components',
+      routeName: DataTableDemo.routeName,
+      buildRoute: (BuildContext context) => new DataTableDemo(),
     ),
     new GalleryItem(
       title: 'Date and time pickers',
@@ -309,6 +314,20 @@ List<GalleryItem> _buildGalleryItems() {
       buildRoute: (BuildContext context) => new CupertinoDialogDemo(),
     ),
     new GalleryItem(
+      title: 'Navigation',
+      subtitle: 'Cupertino styled navigation patterns',
+      category: 'Cupertino Components',
+      routeName: CupertinoNavigationDemo.routeName,
+      buildRoute: (BuildContext context) => new CupertinoNavigationDemo(),
+    ),
+    new GalleryItem(
+      title: 'Pickers',
+      subtitle: 'Cupertino styled pickers',
+      category: 'Cupertino Components',
+      routeName: CupertinoPickerDemo.routeName,
+      buildRoute: (BuildContext context) => new CupertinoPickerDemo(),
+    ),
+    new GalleryItem(
       title: 'Sliders',
       subtitle: 'Cupertino styled sliders',
       category: 'Cupertino Components',
@@ -321,6 +340,14 @@ List<GalleryItem> _buildGalleryItems() {
       category: 'Cupertino Components',
       routeName: CupertinoSwitchDemo.routeName,
       buildRoute: (BuildContext context) => new CupertinoSwitchDemo(),
+    ),
+    // Media
+    new GalleryItem(
+      title: 'Animated images',
+      subtitle: 'GIF and WebP animations',
+      category: 'Media',
+      routeName: ImagesDemo.routeName,
+      buildRoute: (BuildContext context) => new ImagesDemo(),
     ),
     // Styles
     new GalleryItem(
@@ -341,12 +368,18 @@ List<GalleryItem> _buildGalleryItems() {
 
   // Keep Pesto around for its regression test value. It is not included
   // in (release builds) the performance tests.
-//  assert(() {
-//    galleryItems.insert(0,
-//
-//    );
-//    return true;
-//  }());
+  assert(() {
+    galleryItems.insert(0,
+      new GalleryItem(
+        title: 'Pesto',
+        subtitle: 'Simple recipe browser',
+        category: 'Demos',
+        routeName: PestoDemo.routeName,
+        buildRoute: (BuildContext context) => const PestoDemo(),
+      ),
+    );
+    return true;
+  }());
 
   return galleryItems;
 }

@@ -52,51 +52,54 @@ class _GalleryDrawerHeaderState extends State<GalleryDrawerHeader> {
   Widget build(BuildContext context) {
     final double systemTopPadding = MediaQuery.of(context).padding.top;
 
-    return new DrawerHeader(
-      decoration: new FlutterLogoDecoration(
-        margin: new EdgeInsets.fromLTRB(12.0, 12.0 + systemTopPadding, 12.0, 12.0),
-        style: _logoHasName ? _logoHorizontal ? FlutterLogoStyle.horizontal
-                                              : FlutterLogoStyle.stacked
-                                              : FlutterLogoStyle.markOnly,
-        lightColor: _logoColor.shade400,
-        darkColor: _logoColor.shade900,
-        textColor: widget.light ? const Color(0xFF616161) : const Color(0xFF9E9E9E),
+    return new Semantics(
+      label: 'Flutter',
+      child: new DrawerHeader(
+        decoration: new FlutterLogoDecoration(
+          margin: new EdgeInsets.fromLTRB(12.0, 12.0 + systemTopPadding, 12.0, 12.0),
+          style: _logoHasName ? _logoHorizontal ? FlutterLogoStyle.horizontal
+                                                : FlutterLogoStyle.stacked
+                                                : FlutterLogoStyle.markOnly,
+          lightColor: _logoColor.shade400,
+          darkColor: _logoColor.shade900,
+          textColor: widget.light ? const Color(0xFF616161) : const Color(0xFF9E9E9E),
+        ),
+        duration: const Duration(milliseconds: 750),
+        child: new GestureDetector(
+          onLongPress: () {
+            setState(() {
+              _logoHorizontal = !_logoHorizontal;
+              if (!_logoHasName)
+                _logoHasName = true;
+            });
+          },
+          onTap: () {
+            setState(() {
+              _logoHasName = !_logoHasName;
+            });
+          },
+          onDoubleTap: () {
+            setState(() {
+              final List<MaterialColor> options = <MaterialColor>[];
+              if (_logoColor != Colors.blue)
+                options.addAll(<MaterialColor>[Colors.blue, Colors.blue, Colors.blue, Colors.blue, Colors.blue, Colors.blue, Colors.blue]);
+              if (_logoColor != Colors.amber)
+                options.addAll(<MaterialColor>[Colors.amber, Colors.amber, Colors.amber]);
+              if (_logoColor != Colors.red)
+                options.addAll(<MaterialColor>[Colors.red, Colors.red, Colors.red]);
+              if (_logoColor != Colors.indigo)
+                options.addAll(<MaterialColor>[Colors.indigo, Colors.indigo, Colors.indigo]);
+              if (_logoColor != Colors.pink)
+                options.addAll(<MaterialColor>[Colors.pink]);
+              if (_logoColor != Colors.purple)
+                options.addAll(<MaterialColor>[Colors.purple]);
+              if (_logoColor != Colors.cyan)
+                options.addAll(<MaterialColor>[Colors.cyan]);
+              _logoColor = options[new math.Random().nextInt(options.length)];
+            });
+          }
+        ),
       ),
-      duration: const Duration(milliseconds: 750),
-      child: new GestureDetector(
-        onLongPress: () {
-          setState(() {
-            _logoHorizontal = !_logoHorizontal;
-            if (!_logoHasName)
-              _logoHasName = true;
-          });
-        },
-        onTap: () {
-          setState(() {
-            _logoHasName = !_logoHasName;
-          });
-        },
-        onDoubleTap: () {
-          setState(() {
-            final List<MaterialColor> options = <MaterialColor>[];
-            if (_logoColor != Colors.blue)
-              options.addAll(<MaterialColor>[Colors.blue, Colors.blue, Colors.blue, Colors.blue, Colors.blue, Colors.blue, Colors.blue]);
-            if (_logoColor != Colors.amber)
-              options.addAll(<MaterialColor>[Colors.amber, Colors.amber, Colors.amber]);
-            if (_logoColor != Colors.red)
-              options.addAll(<MaterialColor>[Colors.red, Colors.red, Colors.red]);
-            if (_logoColor != Colors.indigo)
-              options.addAll(<MaterialColor>[Colors.indigo, Colors.indigo, Colors.indigo]);
-            if (_logoColor != Colors.pink)
-              options.addAll(<MaterialColor>[Colors.pink]);
-            if (_logoColor != Colors.purple)
-              options.addAll(<MaterialColor>[Colors.purple]);
-            if (_logoColor != Colors.cyan)
-              options.addAll(<MaterialColor>[Colors.cyan]);
-            _logoColor = options[new math.Random().nextInt(options.length)];
-          });
-        }
-      )
     );
   }
 }
@@ -108,6 +111,8 @@ class GalleryDrawer extends StatelessWidget {
     @required this.onThemeChanged,
     this.timeDilation,
     @required this.onTimeDilationChanged,
+    this.textScaleFactor,
+    this.onTextScaleFactorChanged,
     this.showPerformanceOverlay,
     this.onShowPerformanceOverlayChanged,
     this.checkerboardRasterCacheImages,
@@ -115,6 +120,8 @@ class GalleryDrawer extends StatelessWidget {
     this.checkerboardOffscreenLayers,
     this.onCheckerboardOffscreenLayersChanged,
     this.onPlatformChanged,
+    this.overrideDirection: TextDirection.ltr,
+    this.onOverrideDirectionChanged,
     this.onSendFeedback,
   }) : assert(onThemeChanged != null),
        assert(onTimeDilationChanged != null),
@@ -126,6 +133,9 @@ class GalleryDrawer extends StatelessWidget {
   final double timeDilation;
   final ValueChanged<double> onTimeDilationChanged;
 
+  final double textScaleFactor;
+  final ValueChanged<double> onTextScaleFactorChanged;
+
   final bool showPerformanceOverlay;
   final ValueChanged<bool> onShowPerformanceOverlayChanged;
 
@@ -136,6 +146,9 @@ class GalleryDrawer extends StatelessWidget {
   final ValueChanged<bool> onCheckerboardOffscreenLayersChanged;
 
   final ValueChanged<TargetPlatform> onPlatformChanged;
+
+  final TextDirection overrideDirection;
+  final ValueChanged<TextDirection> onOverrideDirectionChanged;
 
   final VoidCallback onSendFeedback;
 
@@ -166,7 +179,7 @@ class GalleryDrawer extends StatelessWidget {
     final Widget mountainViewItem = new RadioListTile<TargetPlatform>(
       // on iOS, we don't want to show an Android phone icon
       secondary: new Icon(defaultTargetPlatform == TargetPlatform.iOS ? Icons.star : Icons.phone_android),
-      title: const Text('Android'),
+      title: new Text(defaultTargetPlatform == TargetPlatform.iOS ? 'Mountain View' : 'Android'),
       value: TargetPlatform.android,
       groupValue: Theme.of(context).platform,
       onChanged: onPlatformChanged,
@@ -176,12 +189,31 @@ class GalleryDrawer extends StatelessWidget {
     final Widget cupertinoItem = new RadioListTile<TargetPlatform>(
       // on iOS, we don't want to show the iPhone icon
       secondary: new Icon(defaultTargetPlatform == TargetPlatform.iOS ? Icons.star_border : Icons.phone_iphone),
-      title: const Text('iOS'),
+      title: new Text(defaultTargetPlatform == TargetPlatform.iOS ? 'Cupertino' : 'iOS'),
       value: TargetPlatform.iOS,
       groupValue: Theme.of(context).platform,
       onChanged: onPlatformChanged,
       selected: Theme.of(context).platform == TargetPlatform.iOS,
     );
+
+    final List<Widget> textSizeItems = <Widget>[];
+    final Map<double, String> textSizes = <double, String>{
+      null: 'System Default',
+      0.8: 'Small',
+      1.0: 'Normal',
+      1.3: 'Large',
+      2.0: 'Huge',
+    };
+    for (double size in textSizes.keys) {
+      textSizeItems.add(new RadioListTile<double>(
+        secondary: const Icon(Icons.text_fields),
+        title: new Text(textSizes[size]),
+        value: size,
+        groupValue: textScaleFactor,
+        onChanged: onTextScaleFactorChanged,
+        selected: textScaleFactor == size,
+      ));
+    }
 
     final Widget animateSlowlyItem = new CheckboxListTile(
       title: const Text('Animate Slowly'),
@@ -191,6 +223,16 @@ class GalleryDrawer extends StatelessWidget {
       },
       secondary: const Icon(Icons.hourglass_empty),
       selected: timeDilation != 1.0,
+    );
+
+    final Widget overrideDirectionItem = new CheckboxListTile(
+      title: const Text('Force RTL'),
+      value: overrideDirection == TextDirection.rtl,
+      onChanged: (bool value) {
+        onOverrideDirectionChanged(value ? TextDirection.rtl : TextDirection.ltr);
+      },
+      secondary: const Icon(Icons.format_textdirection_r_to_l),
+      selected: overrideDirection == TextDirection.rtl,
     );
 
     final Widget sendFeedbackItem = new ListTile(
@@ -214,11 +256,12 @@ class GalleryDrawer extends StatelessWidget {
               children: <TextSpan>[
                 new TextSpan(
                   style: aboutTextStyle,
-                  text: "Flutter is an early-stage, open-source project to help "
-                  "developers build high-performance, high-fidelity, mobile "
-                  "apps for iOS and Android from a single codebase. This "
-                  "gallery is a preview of Flutter's many widgets, behaviors, "
-                  "animations, layouts, and more. Learn more about Flutter at "
+                  text: 'Flutter is an early-stage, open-source project to help developers'
+                        'build high-performance, high-fidelity, mobile apps for '
+                        '${defaultTargetPlatform == TargetPlatform.iOS ? 'multiple platforms' : 'iOS and Android'} '
+                        'from a single codebase. This gallery is a preview of '
+                        "Flutter's many widgets, behaviors, animations, layouts, "
+                        'and more. Learn more about Flutter at '
                 ),
                 new LinkTextSpan(
                   style: linkStyle,
@@ -226,7 +269,7 @@ class GalleryDrawer extends StatelessWidget {
                 ),
                 new TextSpan(
                   style: aboutTextStyle,
-                  text: ".\n\nTo see the source code for this app, please visit the "
+                  text: '.\n\nTo see the source code for this app, please visit the '
                 ),
                 new LinkTextSpan(
                   style: linkStyle,
@@ -235,7 +278,7 @@ class GalleryDrawer extends StatelessWidget {
                 ),
                 new TextSpan(
                   style: aboutTextStyle,
-                  text: "."
+                  text: '.'
                 )
               ]
             )
@@ -252,41 +295,58 @@ class GalleryDrawer extends StatelessWidget {
       mountainViewItem,
       cupertinoItem,
       const Divider(),
-      animateSlowlyItem,
-      // index 8, optional: Performance Overlay
-      sendFeedbackItem,
-      aboutItem
     ];
 
-    if (onShowPerformanceOverlayChanged != null) {
-      allDrawerItems.insert(8, new CheckboxListTile(
-        title: const Text('Performance Overlay'),
-        value: showPerformanceOverlay,
-        onChanged: onShowPerformanceOverlayChanged,
-        secondary: const Icon(Icons.assessment),
-        selected: showPerformanceOverlay,
-      ));
-    }
+    allDrawerItems.addAll(textSizeItems);
 
-    if (onCheckerboardRasterCacheImagesChanged != null) {
-      allDrawerItems.insert(8, new CheckboxListTile(
-        title: const Text('Checkerboard Raster Cache Images'),
-        value: checkerboardRasterCacheImages,
-        onChanged: onCheckerboardRasterCacheImagesChanged,
-        secondary: const Icon(Icons.assessment),
-        selected: checkerboardRasterCacheImages,
-      ));
-    }
+    allDrawerItems..addAll(<Widget>[
+      overrideDirectionItem,
+      const Divider(),
+      animateSlowlyItem,
+      const Divider(),
+    ]);
 
+    bool addedOptionalItem = false;
     if (onCheckerboardOffscreenLayersChanged != null) {
-      allDrawerItems.insert(8, new CheckboxListTile(
+      allDrawerItems.add(new CheckboxListTile(
         title: const Text('Checkerboard Offscreen Layers'),
         value: checkerboardOffscreenLayers,
         onChanged: onCheckerboardOffscreenLayersChanged,
         secondary: const Icon(Icons.assessment),
         selected: checkerboardOffscreenLayers,
       ));
+      addedOptionalItem = true;
     }
+
+    if (onCheckerboardRasterCacheImagesChanged != null) {
+      allDrawerItems.add(new CheckboxListTile(
+        title: const Text('Checkerboard Raster Cache Images'),
+        value: checkerboardRasterCacheImages,
+        onChanged: onCheckerboardRasterCacheImagesChanged,
+        secondary: const Icon(Icons.assessment),
+        selected: checkerboardRasterCacheImages,
+      ));
+      addedOptionalItem = true;
+    }
+
+    if (onShowPerformanceOverlayChanged != null) {
+      allDrawerItems.add(new CheckboxListTile(
+        title: const Text('Performance Overlay'),
+        value: showPerformanceOverlay,
+        onChanged: onShowPerformanceOverlayChanged,
+        secondary: const Icon(Icons.assessment),
+        selected: showPerformanceOverlay,
+      ));
+      addedOptionalItem = true;
+    }
+
+    if (addedOptionalItem)
+      allDrawerItems.add(const Divider());
+
+    allDrawerItems.addAll(<Widget>[
+      sendFeedbackItem,
+      aboutItem,
+    ]);
 
     return new Drawer(child: new ListView(primary: false, children: allDrawerItems));
   }

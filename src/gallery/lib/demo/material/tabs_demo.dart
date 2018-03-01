@@ -7,69 +7,86 @@ import 'package:flutter/material.dart';
 // Each TabBarView contains a _Page and for each _Page there is a list
 // of _CardData objects. Each _CardData object is displayed by a _CardItem.
 
+const String _kGalleryAssetsPackage = 'flutter_gallery_assets';
+
 class _Page {
   _Page({ this.label });
   final String label;
   String get id => label[0];
+  @override
+  String toString() => '$runtimeType("$label")';
 }
 
 class _CardData {
-  const _CardData({ this.title, this.imageAsset });
+  const _CardData({ this.title, this.imageAsset, this.imageAssetPackage });
   final String title;
   final String imageAsset;
+  final String imageAssetPackage;
 }
 
 final Map<_Page, List<_CardData>> _allPages = <_Page, List<_CardData>>{
   new _Page(label: 'LEFT'): <_CardData>[
     const _CardData(
       title: 'Vintage Bluetooth Radio',
-      imageAsset: 'images/shrine/products/radio.png',
+      imageAsset: 'shrine/products/radio.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
     ),
     const _CardData(
       title: 'Sunglasses',
-      imageAsset: 'images/shrine/products/sunnies.png',
+      imageAsset: 'shrine/products/sunnies.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
     ),
     const _CardData(
       title: 'Clock',
-      imageAsset: 'images/shrine/products/clock.png',
+      imageAsset: 'shrine/products/clock.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
     ),
     const _CardData(
       title: 'Red popsicle',
-      imageAsset: 'images/shrine/products/popsicle.png',
+      imageAsset: 'shrine/products/popsicle.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
     ),
     const _CardData(
       title: 'Folding Chair',
-      imageAsset: 'images/shrine/products/lawn_chair.png',
+      imageAsset: 'shrine/products/lawn_chair.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
     ),
     const _CardData(
       title: 'Green comfort chair',
-      imageAsset: 'images/shrine/products/chair.png',
+      imageAsset: 'shrine/products/chair.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
     ),
     const _CardData(
       title: 'Old Binoculars',
-      imageAsset: 'images/shrine/products/binoculars.png',
+      imageAsset: 'shrine/products/binoculars.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
     ),
     const _CardData(
       title: 'Teapot',
-      imageAsset: 'images/shrine/products/teapot.png',
+      imageAsset: 'shrine/products/teapot.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
     ),
     const _CardData(
       title: 'Blue suede shoes',
-      imageAsset: 'images/shrine/products/chucks.png',
-    ),
-    const _CardData(
-      title: 'Dipped Brush',
-      imageAsset: 'images/shrine/products/brush.png',
-    ),
-    const _CardData(
-      title: 'Perfect Goldfish Bowl',
-      imageAsset: 'images/shrine/products/fish_bowl.png',
+      imageAsset: 'shrine/products/chucks.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
     ),
   ],
   new _Page(label: 'RIGHT'): <_CardData>[
     const _CardData(
       title: 'Beachball',
-      imageAsset: 'images/shrine/products/beachball.png',
+      imageAsset: 'shrine/products/beachball.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Dipped Brush',
+      imageAsset: 'shrine/products/brush.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
+    ),
+    const _CardData(
+      title: 'Perfect Goldfish Bowl',
+      imageAsset: 'shrine/products/fish_bowl.png',
+      imageAssetPackage: _kGalleryAssetsPackage,
     ),
   ],
 };
@@ -77,7 +94,7 @@ final Map<_Page, List<_CardData>> _allPages = <_Page, List<_CardData>>{
 class _CardDataItem extends StatelessWidget {
   const _CardDataItem({ this.page, this.data });
 
-  static final double height = 272.0;
+  static const double height = 272.0;
   final _Page page;
   final _CardData data;
 
@@ -92,17 +109,24 @@ class _CardDataItem extends StatelessWidget {
           children: <Widget>[
             new Align(
               alignment: page.id == 'L'
-                ? FractionalOffset.centerLeft
-                : FractionalOffset.centerRight,
+                ? Alignment.centerLeft
+                : Alignment.centerRight,
               child: new CircleAvatar(child: new Text('${page.id}')),
             ),
             new SizedBox(
               width: 144.0,
               height: 144.0,
-              child: new Image.asset(data.imageAsset, fit: BoxFit.contain),
+              child: new Image.asset(
+                data.imageAsset,
+                package: data.imageAssetPackage,
+                fit: BoxFit.contain,
+              ),
             ),
             new Center(
-              child: new Text(data.title, style: Theme.of(context).textTheme.title),
+              child: new Text(
+                data.title,
+                style: Theme.of(context).textTheme.title,
+              ),
             ),
           ],
         ),
@@ -122,28 +146,63 @@ class TabsDemo extends StatelessWidget {
         body: new NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              new SliverAppBar(
-                title: const Text('Tabs and scrolling'),
-                pinned: true,
-                expandedHeight: 150.0,
-                forceElevated: innerBoxIsScrolled,
-                bottom: new TabBar(
-                  tabs: _allPages.keys.map((_Page page) => new Tab(text: page.label)).toList(),
+              new SliverOverlapAbsorber(
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                child: new SliverAppBar(
+                  title: const Text('Tabs and scrolling'),
+                  pinned: true,
+                  expandedHeight: 150.0,
+                  forceElevated: innerBoxIsScrolled,
+                  bottom: new TabBar(
+                    tabs: _allPages.keys.map(
+                      (_Page page) => new Tab(text: page.label),
+                    ).toList(),
+                  ),
                 ),
               ),
             ];
           },
           body: new TabBarView(
             children: _allPages.keys.map((_Page page) {
-              return new ListView(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                itemExtent: _CardDataItem.height,
-                children: _allPages[page].map((_CardData data) {
-                  return new Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: new _CardDataItem(page: page, data: data),
-                  );
-                }).toList(),
+              return new SafeArea(
+                top: false,
+                bottom: false,
+                child: new Builder(
+                  builder: (BuildContext context) {
+                    return new CustomScrollView(
+                      key: new PageStorageKey<_Page>(page),
+                      slivers: <Widget>[
+                        new SliverOverlapInjector(
+                          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                        ),
+                        new SliverPadding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8.0,
+                            horizontal: 16.0,
+                          ),
+                          sliver: new SliverFixedExtentList(
+                            itemExtent: _CardDataItem.height,
+                            delegate: new SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                final _CardData data = _allPages[page][index];
+                                return new Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 8.0,
+                                  ),
+                                  child: new _CardDataItem(
+                                    page: page,
+                                    data: data,
+                                  ),
+                                );
+                              },
+                              childCount: _allPages[page].length,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               );
             }).toList(),
           ),

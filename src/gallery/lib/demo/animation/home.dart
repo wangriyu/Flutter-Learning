@@ -169,7 +169,7 @@ class _AllSectionsLayout extends MultiChildLayoutDelegate {
     this.selectedIndex,
   });
 
-  final FractionalOffset translation;
+  final Alignment translation;
   final double tColumnToRow;
   final double tCollapsed;
   final int cardCount;
@@ -216,12 +216,8 @@ class _AllSectionsLayout extends MultiChildLayoutDelegate {
       final Rect cardRect = _interpolateRect(columnCardRect, rowCardRect).shift(offset);
       final String cardId = 'card$index';
       if (hasChild(cardId)) {
-        // Add a small horizontal gap between the cards.
-        final Rect insetRect = new Rect.fromLTWH(
-          cardRect.left + 0.5, cardRect.top, cardRect.width - 1.0, cardRect.height
-        );
-        layoutChild(cardId, new BoxConstraints.tight(insetRect.size));
-        positionChild(cardId, insetRect.topLeft);
+        layoutChild(cardId, new BoxConstraints.tight(cardRect.size));
+        positionChild(cardId, cardRect.topLeft);
       }
 
       // Layout the title for index.
@@ -349,7 +345,7 @@ class _AllSectionsView extends AnimatedWidget {
 
     return new CustomMultiChildLayout(
       delegate: new _AllSectionsLayout(
-        translation: new FractionalOffset(selectedIndex.value - sectionIndex, 0.0),
+        translation: new Alignment((selectedIndex.value - sectionIndex) * 2.0 - 1.0, -1.0),
         tColumnToRow: tColumnToRow,
         tCollapsed: tCollapsed,
         cardCount: sections.length,
@@ -379,7 +375,7 @@ class _SnappingScrollPhysics extends ClampingScrollPhysics {
 
   @override
   _SnappingScrollPhysics applyTo(ScrollPhysics ancestor) {
-    return new _SnappingScrollPhysics(parent: buildParent(ancestor),  midScrollOffset: midScrollOffset);
+    return new _SnappingScrollPhysics(parent: buildParent(ancestor), midScrollOffset: midScrollOffset);
   }
 
   Simulation _toMidScrollOffsetSimulation(double offset, double dragVelocity) {
@@ -415,7 +411,7 @@ class _SnappingScrollPhysics extends ClampingScrollPhysics {
       // snap to midScrollOffset if they're more than halfway there,
       // otherwise snap to zero.
       final double snapThreshold = midScrollOffset / 2.0;
-      if (offset >=  snapThreshold && offset < midScrollOffset)
+      if (offset >= snapThreshold && offset < midScrollOffset)
         return _toMidScrollOffsetSimulation(offset, dragVelocity);
       if (offset > 0.0 && offset < snapThreshold)
         return _toZeroScrollOffsetSimulation(offset, dragVelocity);
@@ -549,7 +545,7 @@ class _AnimationDemoHomeState extends State<AnimationDemoHome> {
     final double screenHeight = mediaQueryData.size.height;
     final double appBarMaxHeight = screenHeight - statusBarHeight;
 
-    // The scrolloffset that reveals the appBarMidHeight appbar.
+    // The scroll offset that reveals the appBarMidHeight appbar.
     final double appBarMidScrollOffset = statusBarHeight + appBarMaxHeight - _kAppBarMidHeight;
 
     return new SizedBox.expand(
@@ -614,12 +610,16 @@ class _AnimationDemoHomeState extends State<AnimationDemoHome> {
             left: 0.0,
             child: new IconTheme(
               data: const IconThemeData(color: Colors.white),
-              child: new IconButton(
-                icon: const BackButtonIcon(),
-                tooltip: 'Back',
-                onPressed: () {
-                  _handleBackButton(appBarMidScrollOffset);
-                }
+              child: new SafeArea(
+                top: false,
+                bottom: false,
+                child: new IconButton(
+                  icon: const BackButtonIcon(),
+                  tooltip: 'Back',
+                  onPressed: () {
+                    _handleBackButton(appBarMidScrollOffset);
+                  }
+                ),
               ),
             ),
           ),

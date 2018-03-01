@@ -7,14 +7,15 @@ import 'package:flutter/material.dart';
 class NavigationIconView {
   NavigationIconView({
     Widget icon,
-    Widget title,
+    String title,
     Color color,
     TickerProvider vsync,
   }) : _icon = icon,
        _color = color,
+       _title = title,
        item = new BottomNavigationBarItem(
          icon: icon,
-         title: title,
+         title: new Text(title),
          backgroundColor: color,
        ),
        controller = new AnimationController(
@@ -29,6 +30,7 @@ class NavigationIconView {
 
   final Widget _icon;
   final Color _color;
+  final String _title;
   final BottomNavigationBarItem item;
   final AnimationController controller;
   CurvedAnimation _animation;
@@ -47,16 +49,19 @@ class NavigationIconView {
     return new FadeTransition(
       opacity: _animation,
       child: new SlideTransition(
-        position: new FractionalOffsetTween(
-          begin: const FractionalOffset(0.0, 0.02), // Small offset from the top.
-          end: FractionalOffset.topLeft,
+        position: new Tween<Offset>(
+          begin: const Offset(0.0, 0.02), // Slightly down.
+          end: Offset.zero,
         ).animate(_animation),
         child: new IconTheme(
           data: new IconThemeData(
             color: iconColor,
             size: 120.0,
           ),
-          child: _icon,
+          child: new Semantics(
+            label: 'Placeholder for $_title tab',
+            child: _icon,
+          ),
         ),
       ),
     );
@@ -95,31 +100,31 @@ class _BottomNavigationDemoState extends State<BottomNavigationDemo>
     _navigationViews = <NavigationIconView>[
       new NavigationIconView(
         icon: const Icon(Icons.access_alarm),
-        title: const Text('Alarm'),
+        title: 'Alarm',
         color: Colors.deepPurple,
         vsync: this,
       ),
       new NavigationIconView(
         icon: new CustomIcon(),
-        title: const Text('Box'),
+        title: 'Box',
         color: Colors.deepOrange,
         vsync: this,
       ),
       new NavigationIconView(
         icon: const Icon(Icons.cloud),
-        title: const Text('Cloud'),
+        title: 'Cloud',
         color: Colors.teal,
         vsync: this,
       ),
       new NavigationIconView(
         icon: const Icon(Icons.favorite),
-        title: const Text('Favorites'),
+        title: 'Favorites',
         color: Colors.indigo,
         vsync: this,
       ),
       new NavigationIconView(
         icon: const Icon(Icons.event_available),
-        title: const Text('Event'),
+        title: 'Event',
         color: Colors.pink,
         vsync: this,
       )
@@ -152,8 +157,8 @@ class _BottomNavigationDemoState extends State<BottomNavigationDemo>
 
     // We want to have the newly animating (fading in) views on top.
     transitions.sort((FadeTransition a, FadeTransition b) {
-      final Animation<double> aAnimation = a.listenable;
-      final Animation<double> bAnimation = b.listenable;
+      final Animation<double> aAnimation = a.opacity;
+      final Animation<double> bAnimation = b.opacity;
       final double aValue = aAnimation.value;
       final double bValue = bAnimation.value;
       return aValue.compareTo(bValue);
